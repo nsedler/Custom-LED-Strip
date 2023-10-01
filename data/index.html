@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ESP8266 LED Web Server</title>
+    <style>
+        body {
+            background-color: #3c3c3c;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        .headerParent {
+            background-color: #656565;
+            position: relative;
+            width: 100%;
+        }
+
+        .navParent {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            padding: 5px;
+        }
+
+        .navParent a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .stripmodeSelectParent {
+            display: flex;
+            justify-content: space-evenly;
+            background-color: #656565;
+            margin-top: 10px;
+            padding: 25px;
+            border: #656565 solid black;
+            border-radius: 5px;
+        }
+
+        .stripmodeSelectParent label {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        .colorSelectorParent {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            background-color: #656565;
+            margin-top: 10px;
+            padding: 12px;
+        }
+
+        .colorSelectorParent button {
+            flex: 0 0 calc(33.33% - 10px);
+            width: 100px;
+            height: 45px;
+            border: 2px solid black;
+            border-radius: 5px;
+            margin: 5px;
+        }
+
+        .colorSelectorParent input {
+            padding: 0;
+            margin: 0 auto;
+            width: 225px;
+            height: 45px;
+        }
+
+        .slidersParent {
+            background-color: #656565;
+            margin-top: 10px;
+            padding: 25px;
+            border: #656565 solid black;
+            border-radius: 5px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .slidersParent label {
+            color: #fff;
+        }
+
+        .slidersParent * {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
+    <script src="/data/index.js"></script>
+</head>
+
+<body>
+    <div class="bodyParent">
+        <div class="headerParent">
+            <div class="navParent">
+                <a href="http://192.168.4.48">LED Buddy</a>
+                <div class="powerButton">
+                    <button onclick="handlePowerState()">Power</button>
+                </div>
+            </div>
+        </div>
+        <div class="stripmodeSelectParent">
+            <label for="modeDropdown">Select Strip Mode:</label>
+            <select class="stripmodeDropdown" onchange="handleModeChange(this.value)">
+                <option value="solid">Solid Color</option>
+                <option value="rainbowWave">Rainbow Wave Mode</option>
+                <option value="rainbowColors">Rainbow Colors Mode</option>
+                <option value="sinelon">Sinelon Mode</option>
+                <option value="blink">Blink Mode</option>
+            </select>
+        </div>
+        <div class="colorSelectorParent">
+            <div id="picker"></div>
+        </div>
+        <div class="slidersParent">
+            <div class="brightnessSliderParent">
+                <label for="brightness">Brightness:</label>
+                <input id="brightnessSlider" type="range" name="brightness" min="0" max="255" step="5" value="100"
+                    onchange="handleSliderChange('brightnessSlider')">
+            </div>
+            <div class="intervalSliderParent">
+                <label for="interval">Interval:</label>
+                <input id="intervalSlider" type="range" name="interval" min="25" max="5000" step="25" value="50"
+                    onchange="handleSliderChange('intervalSlider')">
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
