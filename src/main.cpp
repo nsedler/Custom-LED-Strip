@@ -10,7 +10,7 @@
 #include "credentials.h"
 
 #define t 32
-#define p 150
+#define p 750
 
 #define ledPin D3
 #define numLeds p
@@ -218,19 +218,16 @@ void handleLedPower() {
 
 void handleSetColor() {
   rainbowWave = 0;
-  rainbowColors = 0;
-
   String color =
       server.arg("color"); // Get the "color" parameter from the request body
-  String hue = server.arg("hue");
-  String saturation = server.arg("saturation");
-  String value = server.arg("value");
+  String r = server.arg("r");
+  String g = server.arg("g");
+  String b = server.arg("b");
 
-  // Convert the HSV values to CRGB format
-  CHSV newColor = CHSV(hue.toInt(), saturation.toInt(), value.toInt());
-
-  Serial.println("Color set to: HSV(" + hue + "," + saturation + "," + value +
-                 ")");
+  // Convert the color value to CRGB format
+  CRGB newColor(r.toInt(), g.toInt(), b.toInt());
+  
+  Serial.println("Color set to: " + r + "," + g + "," + b);
   // Set the LEDs to the new color
   fill_solid(leds, numLeds, newColor);
   FastLED.show();

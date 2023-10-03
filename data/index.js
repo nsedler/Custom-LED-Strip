@@ -1,26 +1,56 @@
 let address = "http://192.168.4.48/api/led";
 let power = true;
+
 function handlePowerState() {
-    fetch(`${address}/power`, { method: "POST" })
-        .then(() => console.log(`power set to ${!power}`))
-        .catch(e => console.log(e)); power = !power;
+    fetch(`${address}/power`, {
+        method: "POST"
+    }).then(() => console.log(`power set to ${!power}`)).catch(e => console.log(e));
+    power = !power;
 }
+
 function handleModeChange(newMode) {
-    fetch(`${address}/mode?mode=${newMode}`, { method: "POST" })
-        .then(() => console.log(`${newMode} Mode Activated`))
-        .catch(e => console.log(e));
+    fetch(`${address}/mode?mode=${newMode}`, {
+        method: "POST"
+    }).then(() => console.log(`${newMode} Mode Activated`)).catch(e => console.log(e));
 }
+
+function handleColor(newColor) {
+    fetch(`${address}/color?color=${newColor}`, {
+        method: "POST"
+    }).then(() => console.log(`Color set to ${newColor}`)).catch(e => console.log(e));
+}
+
+function handleCustomColor(customColor) {
+    customColor = hexToRgb(customColor);
+    fetch(`${address}/color?r=${customColor.r}&g=${customColor.g}&b=${customColor.b}`, {
+        method: "POST"
+    }).then(() => console.log(`Color set to ${customColor.r},${customColor.g},${customColor.b}`)).catch(e => console.log(e));
+}
+
+function hexToRgb(hex) {
+    hex = hex.replace(/^#/, '');
+    const bigint = parseInt(hex, 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+    return {
+        r,
+        g,
+        b
+    };
+}
+
 function handleSliderChange(elementName) {
     var slider = document.getElementById(elementName);
     var sliderValue = slider.value;
     if (elementName == 'brightnessSlider') {
-        fetch(`${address}/brightness?brightness=${sliderValue}`, { method: "POST" })
-            .then(() => console.log(`Brightness set to ${sliderValue}`))
-            .catch(e => console.log(e));
+        fetch(`${address}/brightness?brightness=${sliderValue}`, {
+            method: "POST"
+        }).then(() => console.log(`Brightness set to ${sliderValue}`)).catch(e => console.log(e));
     } else if (elementName == "intervalSlider") {
-        fetch(`${address}/interval?interval=${sliderValue}`, { method: "POST" })
-            .then(() => console.log(`Interval set to ${sliderValue}`))
-            .catch(e => console.log(e));
+        fetch(`${address}/interval?interval=${sliderValue}`, {
+            method: "POST"
+        }).then(() => console.log(`Interval set to ${sliderValue}`)).catch(e => console.log(e));
     }
 }
 var colorPicker = new iro.ColorPicker("#picker", {
@@ -33,8 +63,8 @@ var colorPicker = new iro.ColorPicker("#picker", {
 
 colorPicker.on('input:end', function (color) {
     // log the current color as a HEX string
-    var hsv = color.hsv;
-    fetch(`${address}/color?hue=${hsv.h}&saturation=${hsv.s}&value=${hsv.v}`, { method: "POST" })
-        .then(() => console.log(`Color set to HSV(${hsv.h},${hsv.s},${hsv.v})`))
-        .catch(e => console.log(e));
+    customColor = hexToRgb(color.hexString);
+    fetch(`${address}/color?r=${customColor.r}&g=${customColor.g}&b=${customColor.b}`, {
+        method: "POST"
+    }).then(() => console.log(`Color set to ${customColor.r},${customColor.g},${customColor.b}`)).catch(e => console.log(e));
 });
